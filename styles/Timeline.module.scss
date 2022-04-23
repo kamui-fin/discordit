@@ -1,0 +1,29 @@
+.circle {
+    min-width: 3rem;
+    min-height: 3rem;
+    line-height: 3rem;
+    border-radius: 50%;
+    font-size: 1rem;
+    text-align: center;
+    border: 1px solid #f2f5f9;
+}
+
+.timeline {
+    display: flex;
+    align-items: center;
+}
+
+.line {
+    height: 2px;
+    width: 100%;
+    background-color: #f2f5f9;
+}
+
+.purple {
+    background-color: #664de5;
+    color: #fff;
+}
+
+.noborder {
+    border: 0;
+}
