@@ -6,7 +6,7 @@ export const discordOauth = catchAsync(async (req, res) => {
     const { code } = req.body
     const tokens = await getDiscordOauthToken(code)
     const user = await getDiscordUser(tokens)
-    req.session.userId = user.id
+    req.session.tokens = tokens
     res.status(httpStatus.CREATED).send(user)
 })
 
