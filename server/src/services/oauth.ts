@@ -1,6 +1,6 @@
 import axios from "axios"
 import { URLSearchParams } from "url"
-import { DISCORD_BASE_URL } from "../config"
+import { DISCORD_BASE_URL, gauth } from "../config"
 import { DiscordUser, Tokens } from "../types"
 
 export const getDiscordOauthToken = async (code: string): Promise<Tokens> => {
@@ -34,4 +34,9 @@ export const getDiscordUser = async (tokens: Tokens): Promise<DiscordUser> => {
         },
     })
     return user.data
+}
+
+export const getGoogleOauthToken = async (code: string) => {
+    const { tokens } = await gauth.getToken(code)
+    return tokens
 }

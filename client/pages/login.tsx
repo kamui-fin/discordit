@@ -5,67 +5,36 @@ import DriveLogin from "../components/login/DriveLogin"
 import Timeline from "../components/Timeline"
 import styles from "../styles/login.module.scss"
 import axios from "axios"
-import { oauth2Client } from "../lib/google"
-
 
 const Login = () => {
-    // handle OAuth
     const router = useRouter()
-    const { code, step } = router.query
+    const { code } = router.query
+    const [googleUrl, setGoogleUrl] = useState("")
+
     useEffect(() => {
-        const getDiscordOauthToken = async () => {
-            const oauthResult = await axios.post(
-                "https://discord.com/api/oauth2/token",
-                new URLSearchParams({
-                    client_id: process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID,
-                    client_secret:
-                        process.env.NEXT_PUBLIC_DISCORD_CLIENT_SECRET,
-                    code,
-                    grant_type: "authorization_code",
-                    redirect_uri: "http://localhost:3000/login?step=2",
-                    scope: "identify",
-                }),
-                {
-                    headers: {
-                        "Content-Type": "application/x-www-form-urlencoded",
-                    },
-                }
-            )
-
-            const oauthData = oauthResult.data
-            // save for now
-            window.localStorage.setItem("discordToken", oauthData.access_token)
+        const fetchGoogleUrl = async (): Promise<string> => {
+            const url = (
+                await axios.get("http://localhost:8080/auth/google/url")
+            ).data.url
+            setGoogleUrl(url)
         }
+        fetchGoogleUrl()
+    }, [])
 
-        const getGoogleOauthToken = async () => {
-            const { tokens } = await oauth2Client.getToken(code)
-            console.log(tokens)
-            oauth2Client.setCredentials(tokens)
-            window.localStorage.setItem("googleToken", tokens.access_token)
-        }
-
-        if (code) {
-            try {
-                if (currStep == 1) {
-                    getDiscordOauthToken()
-                    advance()
-                } else if (currStep == 2) {
-                    getGoogleOauthToken()
-                }
-            } catch (error) {
-                console.error(error)
-            }
-        }
+    useEffect(() => {
+        // discord login
+        // google authorization
     }, [code])
 
     const numSteps = 2
-    const steps = [<DiscordLogin onDone={() => {}} />, <DriveLogin />]
-    const [currStep, setCurrStep] = useState(Number.parseInt(step) || 1)
-    const advance = () => {
-        if (currStep < numSteps) {
-            setCurrStep(currStep + 1)
-        }
-    }
+    const [currStep, setCurrStep] = useState(
+        Number.parseInt(router.query.step || "1")
+    )
+
+    const steps = [
+        <DiscordLogin onDone={() => {}} />,
+        <DriveLogin url={googleUrl} />,
+    ]
     return (
         <div className={styles.container}>
             <Timeline

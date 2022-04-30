@@ -1,14 +1,7 @@
 import Button from "../Button"
 import styles from "../../styles/DiscordLogin.module.scss"
-import { oauth2Client, scopes } from "../../lib/google"
 
-const DriveLogin = ({ onDone }: { onDone?: () => void }) => {
-    const url = oauth2Client.generateAuthUrl({
-        // 'online' (default) or 'offline' (gets refresh_token)
-        access_type: "online",
-        scope: scopes,
-    })
-    console.log(url)
+const DriveLogin = ({ onDone, url }: { onDone?: () => void; url: string }) => {
     return (
         <div className={styles.container}>
             <h1>Next, sign in to Google Drive</h1>
