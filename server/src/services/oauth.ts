@@ -12,7 +12,7 @@ export const getDiscordOauthToken = async (code: string): Promise<Tokens> => {
                 client_secret: process.env.DISCORD_CLIENT_SECRET,
                 code,
                 grant_type: "authorization_code",
-                redirect_uri: "http://localhost:3000/login?step=2",
+                redirect_uri: "http://localhost:3000/login?step=1",
                 scope: "identify",
             }),
             {

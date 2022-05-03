@@ -2,7 +2,7 @@ import cx from "classnames"
 import styles from "../styles/Button.module.scss"
 
 const Button = ({
-    type,
+    type = "primary",
     text,
     icon,
     onDone,

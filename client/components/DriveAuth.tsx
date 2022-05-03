@@ -1,5 +1,5 @@
 import Button from "../Button"
-import styles from "../../styles/DiscordLogin.module.scss"
+import styles from "../styles/DiscordLogin.module.scss"
 
 const DriveLogin = ({ onDone, url }: { onDone?: () => void; url: string }) => {
     return (
