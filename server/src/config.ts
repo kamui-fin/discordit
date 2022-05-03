@@ -8,7 +8,7 @@ dotenv.config()
 export const {
     NODE_ENV = "development",
     APP_PORT = 3000,
-    APP_SECRET = crypto.randomBytes(32).toString("base64"),
+    APP_SECRET = "bruh",
     SESSION_COOKIE = "sid",
     REDIS_URI = "redis://localhost:6379",
 } = process.env
@@ -21,10 +21,12 @@ export const SESSION_OPTS: SessionOptions = {
     name: SESSION_COOKIE,
     secret: APP_SECRET,
     resave: false,
+    rolling: false,
     saveUninitialized: false,
     cookie: {
         secure: false,
-        httpOnly: false,
+        httpOnly: true,
+        sameSite: "none",
         maxAge: ONE_MONTH_MS,
     },
 }

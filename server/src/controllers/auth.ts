@@ -17,7 +17,9 @@ export const googleOauth = catchAsync(async (req, res) => {
     // only authorization, not authentication
     const { code } = req.body
     const tokens = await getGoogleOauthToken(code)
-    req.sessions.googleTokens = tokens
+    req.session.googleTokens = tokens
+    // for some reason a manual save is required to persist google tokens
+    req.session.save(function (err) {})
     res.status(httpStatus.OK)
 })
 
@@ -27,7 +29,7 @@ export const generateGoogleAuthUrl = catchAsync(async (req, res) => {
         access_type: "online",
         scope: scopes,
     })
-    res.status(httpStatus.OK).send({url})
+    res.status(httpStatus.OK).send({ url })
 })
 
 export const logout = catchAsync(async (req, res) => {

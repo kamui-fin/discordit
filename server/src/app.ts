@@ -11,7 +11,7 @@ import { errors } from "celebrate"
 import { router } from "./routes"
 
 const app = express()
-app.use(cors())
+app.use(cors({origin: "http://localhost:3000", credentials: true}))
 app.use(helmet())
 app.use(morgan("combined"))
 
