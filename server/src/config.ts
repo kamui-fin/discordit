@@ -10,6 +10,7 @@ export const {
     APP_PORT = 3000,
     APP_SECRET = "bruh",
     SESSION_COOKIE = "sid",
+    MONGO_URI = "mongodb://127.0.0.1:27017/discordit",
     REDIS_URI = "redis://localhost:6379",
 } = process.env
 
@@ -36,7 +37,7 @@ export const DISCORD_BASE_URL = "https://discord.com/api"
 export const gauth = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
-    "http://localhost:3000/login?step=2"
+    "http://localhost:3000/login?step=1"
 )
 
 export const scopes = [

@@ -8,6 +8,11 @@
     font-weight: 500;
 }
 
+.button * {
+    text-decoration: none;
+    color: #fff;
+}
+
 .button:hover {
     cursor: pointer;
 }
