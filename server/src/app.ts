@@ -4,14 +4,15 @@ import connectRedis from "connect-redis"
 import session from "express-session"
 import cors from "cors"
 import morgan from "morgan"
-import { REDIS_URI, APP_PORT, SESSION_OPTS } from "./config"
+import { REDIS_URI, APP_PORT, SESSION_OPTS, MONGO_URI } from "./config"
 import { createClient } from "redis"
 import { errorHandler } from "./middlewares/error"
 import { errors } from "celebrate"
 import { router } from "./routes"
+import mongoose from "mongoose"
 
 const app = express()
-app.use(cors({origin: "http://localhost:3000", credentials: true}))
+app.use(cors({ origin: "http://localhost:3000", credentials: true }))
 app.use(helmet())
 app.use(morgan("combined"))
 
@@ -43,7 +44,9 @@ initRedis().then(() => {
     app.use(router)
     app.use(errors())
     app.use(errorHandler)
-    app.listen(APP_PORT, () => {
-        console.log(`Listening to port ${APP_PORT}`)
+    mongoose.connect(MONGO_URI).then(() => {
+        app.listen(APP_PORT, () => {
+            console.log(`Listening to port ${APP_PORT}`)
+        })
     })
 })

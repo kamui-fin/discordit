@@ -1,4 +1,3 @@
-import crypto from "crypto"
 import dotenv from "dotenv"
 import { SessionOptions } from "express-session"
 import { google } from "googleapis"
@@ -37,11 +36,13 @@ export const DISCORD_BASE_URL = "https://discord.com/api"
 export const gauth = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
-    "http://localhost:3000/login?step=1"
+    "http://localhost:3000/"
 )
 
 export const scopes = [
     "https://www.googleapis.com/auth/photoslibrary",
     "https://www.googleapis.com/auth/photoslibrary.appendonly",
     "https://www.googleapis.com/auth/photoslibrary.sharing",
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
 ]
