@@ -9,9 +9,15 @@ import { createClient } from "redis"
 import { errorHandler } from "./middlewares/error"
 import { errors } from "celebrate"
 import { router } from "./routes"
+import fileUpload from "express-fileupload"
 import mongoose from "mongoose"
 
 const app = express()
+app.use(
+    fileUpload({
+        createParentPath: false,
+    })
+)
 app.use(cors({ origin: "http://localhost:3000", credentials: true }))
 app.use(helmet())
 app.use(morgan("combined"))
@@ -22,6 +28,7 @@ const initRedis = async () => {
         legacyMode: true,
         url: REDIS_URI,
     })
+
     redisClient.on("error", (err) => {
         console.log("Could not establish a connection with redis. " + err)
     })

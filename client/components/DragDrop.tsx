@@ -1,7 +1,8 @@
 import { useCallback, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import Button from "../components/Button"
-import styles from "../styles/index.module.scss"
+import { http } from "../lib/axios"
+import styles from "../styles/DragDrop.module.scss"
 
 const DragDrop = () => {
     const [files, setFiles] = useState([])
@@ -15,6 +16,11 @@ const DragDrop = () => {
         },
         onDrop,
     })
+    const uploadAll = async () => {
+        const formData = new FormData()
+        formData.append("file", files[0])
+        await http.post("/media/upload", formData)
+    }
     return (
         <main className={styles.container}>
             <div {...getRootProps()} className={styles.dragdrop}>
@@ -34,9 +40,9 @@ const DragDrop = () => {
                     ))}
                 </ul>
             </div>
-            <Button text="Submit" />
+            <Button onDone={uploadAll}>Submit</Button>
         </main>
     )
 }
 
-export default DragDrop;
+export default DragDrop

@@ -4,6 +4,7 @@ export interface IUser {
     userId: string
     username: string
     email?: string
+    folderId?: string
 }
 
 const schema = new Schema<IUser>(
@@ -15,6 +16,9 @@ const schema = new Schema<IUser>(
             unique: true,
             trim: true,
             lowercase: true,
+        },
+        folderId: {
+            type: String,
         },
     },
     { timestamps: true }

@@ -1,7 +1,8 @@
 import { catchAsync } from "../utils"
 import httpStatus from "http-status"
-import { getGoogleOauthToken, getGoogleUser, registerIfNotExists } from "../services/auth"
-import { gauth, scopes } from "../config"
+import { getClient, getGoogleOauthToken, getGoogleUser, registerIfNotExists } from "../services/auth"
+import { SCOPES } from "../config"
+import { createFolder } from "../services/media"
 
 export const googleOauth = catchAsync(async (req, res) => {
     // assumes already logged in
@@ -9,11 +10,15 @@ export const googleOauth = catchAsync(async (req, res) => {
     const { code } = req.body
     const tokens = await getGoogleOauthToken(code)
 
+    // setup their folder
+    const folderId = await createFolder(getClient(tokens), "discordit")
+
     // save user to db
     const userInfo = await getGoogleUser(tokens)
-    await registerIfNotExists(userInfo)
+    await registerIfNotExists({ folderId, ...userInfo })
 
     req.session.tokens = tokens
+    req.session.userId = userInfo.id
     req.session.loggedIn = true
     // for some reason a manual save is required to persist google tokens
     req.session.save(function (err) {})
@@ -21,10 +26,10 @@ export const googleOauth = catchAsync(async (req, res) => {
 })
 
 export const generateGoogleAuthUrl = catchAsync(async (req, res) => {
-    const url = gauth.generateAuthUrl({
+    const url = getClient().generateAuthUrl({
         // 'online' (default) or 'offline' (gets refresh_token)
         access_type: "online",
-        scope: scopes,
+        scope: SCOPES,
     })
     res.status(httpStatus.OK).send({ url })
 })
