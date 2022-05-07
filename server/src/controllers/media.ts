@@ -12,7 +12,7 @@ export const upload = catchAsync(async (req, res) => {
             await uploadFiles(req.session.userId, req.session.tokens, req.files)
             res.send({
                 ok: true,
-                msg: "File is uploaded",
+                msg: "Uploaded files",
             })
         }
     } catch (err) {

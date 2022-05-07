@@ -1,12 +1,12 @@
 import express from "express"
-import { authController } from "../controllers"
-import { authValidation } from "../validations"
+import { googleOauth, generateGoogleAuthUrl } from "../controllers/auth"
+import { oauth } from "../validations/auth"
 import { validate } from "../utils"
 import { onlyAuth } from "../middlewares/auth"
 
 const router = express.Router()
 
-router.post("/google", validate(authValidation.oauth), authController.googleOauth, onlyAuth)
-router.get("/google/url", validate(authValidation.oauth), authController.generateGoogleAuthUrl)
+router.post("/google", validate(oauth), googleOauth, onlyAuth)
+router.get("/google/url", validate(oauth), generateGoogleAuthUrl)
 
 export default router

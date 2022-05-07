@@ -1,6 +1,6 @@
 import axios from "axios"
 import { google } from "googleapis"
-import { UserModel } from "../models"
+import { UserModel } from "../models/user"
 
 export const getGoogleOauthToken = async (code: string) => {
     const { tokens } = await getClient().getToken(code)

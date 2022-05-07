@@ -10,7 +10,7 @@ import { errorHandler } from "./middlewares/error"
 import { errors } from "celebrate"
 import { router } from "./routes"
 import fileUpload from "express-fileupload"
-import mongoose from "mongoose"
+import { connectDb } from "./db"
 
 const app = express()
 app.use(
@@ -45,15 +45,19 @@ const initRedis = async () => {
     )
 }
 
-initRedis().then(() => {
+const startExpress = () => {
+    app.listen(APP_PORT, () => {
+        console.log(`Listening to port ${APP_PORT}`)
+    })
+}
+
+initRedis().then(async () => {
     // setup db, app, and routes
     app.use(express.json())
     app.use(router)
     app.use(errors())
     app.use(errorHandler)
-    mongoose.connect(MONGO_URI).then(() => {
-        app.listen(APP_PORT, () => {
-            console.log(`Listening to port ${APP_PORT}`)
-        })
-    })
+
+    await connectDb()
+    startExpress()
 })

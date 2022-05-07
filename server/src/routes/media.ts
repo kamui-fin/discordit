@@ -1,10 +1,9 @@
 import express from "express"
-import { mediaController } from "../controllers"
+import { upload } from "../controllers/media"
 import { onlyAuth } from "../middlewares/auth"
 
 const router = express.Router()
 
-router.post("/upload", mediaController.upload, onlyAuth)
-// router.get("/:id", mediaController.getInfo, onlyAuth)
+router.post("/upload", upload, onlyAuth)
 
 export default router
