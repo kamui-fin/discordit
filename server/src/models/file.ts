@@ -2,14 +2,14 @@ import { Schema, model } from "mongoose"
 import { AutoIncrement } from "../db"
 
 export interface File {
-    userId: string
+    userId: number
     fileId: string
     mimeType: string
     seq: number
 }
 
 const schema = new Schema<File>({
-    userId: { type: String, required: true },
+    userId: { type: Number, required: true },
     fileId: { type: String, required: true },
     mimeType: { type: String, required: true },
 })

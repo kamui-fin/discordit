@@ -63,13 +63,13 @@ export const uploadToDrive = async (tokens: Credentials, file: UploadedFile, app
     return res.data
 }
 
-const getUserFolderId = async (userId: string) => {
+const getUserFolderId = async (userId: number) => {
     const user = await UserModel.findOne({ userId })
     return user?.folderId
 }
 
-export const uploadFile = async (id: string, tokens: Credentials, file: UploadedFile) => {
-    const folder = await getUserFolderId(id)
+export const uploadFile = async (userId: number, tokens: Credentials, file: UploadedFile) => {
+    const folder = await getUserFolderId(userId)
     if (folder) {
         const res = await uploadToDrive(tokens, file, folder)
         return { mimetype: file.mimetype, ...res }

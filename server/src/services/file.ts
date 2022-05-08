@@ -26,7 +26,7 @@ export const decodeBase62 = (str: string): number => {
 }
 
 // returns shortened version
-export const insertFile = async (userId: string, fileId: string, mimeType: string): Promise<string> => {
+export const insertFile = async (userId: number, fileId: string, mimeType: string): Promise<string> => {
     const file = new FileModel({ userId, fileId, mimeType })
     await file.save()
     return encodeBase62(file.seq)

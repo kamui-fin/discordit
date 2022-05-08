@@ -3,7 +3,7 @@ import { Credentials } from "google-auth-library"
 
 declare module "express-session" {
     export interface SessionData {
-        userId?: string
+        userId?: number
         loggedIn?: boolean
         tokens?: Credentials
     }

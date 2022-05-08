@@ -39,7 +39,7 @@ export const getClient = (tokens?: Credentials) => {
     return oAuth2Client
 }
 
-export const withTokensById = async (userId: string, cb: (tokens: Credentials) => void) => {
+export const withTokensById = async (userId: number, cb: (tokens: Credentials) => void) => {
     store.all?.((error, sessions) => {
         if (error) console.error(error)
         if (sessions) {
