@@ -1,10 +1,15 @@
 import { ErrorRequestHandler } from "express"
+import { logger } from "../utils"
 
 export const errorHandler: ErrorRequestHandler = (err, _, res) => {
-    const { statusCode = 500, message } = err
-    console.error(err)
-    res.status(statusCode).send({
-        status: statusCode,
-        message,
+    const { httpCode, name, description } = err
+    logger.error(err)
+
+    res.status(httpCode).send({
+        ok: false,
+        error: {
+            name,
+            description
+        }
     })
 }

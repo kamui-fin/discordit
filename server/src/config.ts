@@ -35,3 +35,5 @@ export const SCOPES = [
     "https://www.googleapis.com/auth/userinfo.email",
     "https://www.googleapis.com/auth/userinfo.profile",
 ]
+
+export const FRONTEND_URL = "http://localhost:3000"

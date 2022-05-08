@@ -3,6 +3,7 @@ import session from "express-session"
 import mongoose from "mongoose"
 import { createClient } from "redis"
 import { MONGO_URI, REDIS_URI, SESSION_OPTS } from "./config"
+import { ApiError, logger } from "./utils"
 
 export const connectDb = async () => {
     await mongoose.connect(MONGO_URI)
@@ -16,10 +17,10 @@ const redisClient = createClient({
 })
 
 redisClient.on("error", (err) => {
-    console.log("Could not establish a connection with redis. " + err)
+    throw new ApiError("Could not establish a connection with redis. " + err)
 })
 redisClient.on("connect", () => {
-    console.log("Connected to redis successfully")
+    logger.info("Connected to redis successfully")
 })
 
 const RedisStore = connectRedis(session)

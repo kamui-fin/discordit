@@ -10,7 +10,6 @@ const reverseString = (str: string): string => {
 export const encodeBase62 = (num: number): string => {
     let res = ""
     while (num > 0) {
-        console.log(num)
         res += ALPHABET.charAt(num % BASE)
         num = Math.floor(num / BASE)
     }

@@ -8,6 +8,7 @@ import { errors } from "celebrate"
 import { router } from "./routes"
 import fileUpload from "express-fileupload"
 import { connectDb, startSession } from "./db"
+import { logger } from "./utils"
 
 const app = express()
 app.use(
@@ -25,7 +26,7 @@ const initRedis = async () => {
 
 const startExpress = () => {
     app.listen(APP_PORT, () => {
-        console.log(`Listening to port ${APP_PORT}`)
+        logger.info(`Listening to port ${APP_PORT}`)
     })
 }
 
@@ -38,4 +39,13 @@ initRedis().then(async () => {
 
     await connectDb()
     startExpress()
+})
+
+// forward
+process.on("unhandledRejection", (reason: Error) => {
+    throw reason
+})
+
+process.on("uncaughtException", (error: Error) => {
+    logger.error(error)
 })

@@ -1,5 +1,5 @@
 import { catchAsync } from "../utils"
-import httpStatus from "http-status"
+import { NO_CONTENT, OK } from "http-status"
 import { getClient, getGoogleOauthToken, getGoogleUser, registerIfNotExists } from "../services/auth"
 import { SCOPES } from "../config"
 import { createFolder } from "../services/media"
@@ -22,7 +22,7 @@ export const googleOauth = catchAsync(async (req, res) => {
     req.session.loggedIn = true
     // for some reason a manual save is required to persist google tokens
     req.session.save()
-    res.status(httpStatus.OK).send(userInfo)
+    res.status(OK).send(userInfo)
 })
 
 export const generateGoogleAuthUrl = catchAsync(async (_, res) => {
@@ -31,7 +31,7 @@ export const generateGoogleAuthUrl = catchAsync(async (_, res) => {
         access_type: "online",
         scope: SCOPES,
     })
-    res.status(httpStatus.OK).send({ url })
+    res.status(OK).send({ url })
 })
 
 export const logout = catchAsync(async (req, res) => {
@@ -39,6 +39,6 @@ export const logout = catchAsync(async (req, res) => {
         if (err) {
             throw err()
         }
-        res.status(httpStatus.NO_CONTENT).send()
+        res.status(NO_CONTENT).send()
     })
 })

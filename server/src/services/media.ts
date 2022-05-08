@@ -4,10 +4,7 @@ import axios from "axios"
 import { getClient } from "./auth"
 import { UserModel } from "../models/user"
 import { UploadedFile } from "express-fileupload"
-
-export const getFileType = (filename: string) => {
-    return filename.split(/\//)[1]
-}
+import { ApiError, getFileType, logger } from "../utils"
 
 export const createFolder = async (auth: OAuth2Client, name: string, parent?: string) => {
     const drive = google.drive({ version: "v3", auth })
@@ -74,4 +71,23 @@ export const uploadFile = async (userId: number, tokens: Credentials, file: Uplo
         const res = await uploadToDrive(tokens, file, folder)
         return { mimetype: file.mimetype, ...res }
     }
+}
+
+export const driveDownloadFile = async (fileId: string, tokens: Credentials) => {
+    const drive = google.drive({ version: "v3", auth: getClient(tokens) })
+    const strm = await drive.files.get(
+        {
+            fileId: fileId,
+            alt: "media",
+        },
+        { responseType: "stream" }
+    )
+
+    return strm.data
+        .on("end", function () {
+            logger.info("finished streaming data")
+        })
+        .on("error", function (err) {
+            throw new ApiError(`error streaming data ${err}`);
+        })
 }
