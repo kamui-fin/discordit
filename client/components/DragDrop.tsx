@@ -19,7 +19,10 @@ const DragDrop = () => {
     const uploadAll = async () => {
         const formData = new FormData()
         formData.append("file", files[0])
-        await http.post("/media/upload", formData)
+        const res = await http.post("/media/upload", formData)
+        const { fileId } = res
+        const shortened = await http.post("/url/shorten", { fileId: 0 })
+        console.log(shortened)
     }
     return (
         <main className={styles.container}>

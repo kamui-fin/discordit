@@ -1,14 +1,15 @@
 import { google } from "googleapis"
-import { OAuth2Client } from "google-auth-library"
+import { Credentials, OAuth2Client } from "google-auth-library"
 import axios from "axios"
 import { getClient } from "./auth"
 import { UserModel } from "../models/user"
+import { UploadedFile } from "express-fileupload"
 
 export const getFileType = (filename: string) => {
     return filename.split(/\//)[1]
 }
 
-export const createFolder = async (auth: OAuth2Client, name: string, parent?) => {
+export const createFolder = async (auth: OAuth2Client, name: string, parent?: string) => {
     const drive = google.drive({ version: "v3", auth })
     let query = `name = '${name}' and mimeType = 'application/vnd.google-apps.folder' and trashed = false`
     if (parent) {
@@ -19,9 +20,9 @@ export const createFolder = async (auth: OAuth2Client, name: string, parent?) =>
         fields: "files(id)",
         spaces: "drive",
     })
-    const alreadyExisting = listing.data.files[0] !== undefined
-    if (alreadyExisting) {
-        return listing.data.files[0].id
+    const fileList = listing.data.files
+    if (fileList) {
+        return fileList[0].id
     }
 
     const fileMetadata = {
@@ -36,7 +37,7 @@ export const createFolder = async (auth: OAuth2Client, name: string, parent?) =>
     return res.data.id
 }
 
-export const uploadFile = async (tokens, file, appFolderId) => {
+export const uploadToDrive = async (tokens: Credentials, file: UploadedFile, appFolderId: string) => {
     // create parent if not exists
     const folderId = await createFolder(getClient(tokens), getFileType(file.mimetype), appFolderId)
     const resp = await axios.post(
@@ -62,15 +63,15 @@ export const uploadFile = async (tokens, file, appFolderId) => {
     return res.data
 }
 
-const getUserFolderId = async (userId) => {
-    const { folderId } = await UserModel.findOne({ userId })
-    return folderId
+const getUserFolderId = async (userId: string) => {
+    const user = await UserModel.findOne({ userId })
+    return user?.folderId
 }
 
-export const uploadFiles = async (id, tokens, files) => {
-    // just to make sure the discordit folder still exists
+export const uploadFile = async (id: string, tokens: Credentials, file: UploadedFile) => {
     const folder = await getUserFolderId(id)
-    Object.values(files).map(async (file) => {
-        const res = await uploadFile(tokens, file, folder)
-    })
+    if (folder) {
+        const res = await uploadToDrive(tokens, file, folder)
+        return { mimetype: file.mimetype, ...res }
+    }
 }

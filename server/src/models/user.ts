@@ -3,8 +3,8 @@ import { Schema, model } from "mongoose"
 export interface IUser {
     userId: string
     username: string
-    email?: string
-    folderId?: string
+    email: string
+    folderId: string
 }
 
 const schema = new Schema<IUser>(
@@ -16,9 +16,11 @@ const schema = new Schema<IUser>(
             unique: true,
             trim: true,
             lowercase: true,
+            required: true
         },
         folderId: {
             type: String,
+            required: true
         },
     },
     { timestamps: true }

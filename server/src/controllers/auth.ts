@@ -21,11 +21,11 @@ export const googleOauth = catchAsync(async (req, res) => {
     req.session.userId = userInfo.id
     req.session.loggedIn = true
     // for some reason a manual save is required to persist google tokens
-    req.session.save(function (err) {})
+    req.session.save()
     res.status(httpStatus.OK).send(userInfo)
 })
 
-export const generateGoogleAuthUrl = catchAsync(async (req, res) => {
+export const generateGoogleAuthUrl = catchAsync(async (_, res) => {
     const url = getClient().generateAuthUrl({
         // 'online' (default) or 'offline' (gets refresh_token)
         access_type: "online",

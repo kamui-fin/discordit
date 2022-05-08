@@ -10,6 +10,9 @@
         "format": "prettier --write src/**/*.ts"
     },
     "dependencies": {
+        "@types/express-fileupload": "^1.2.2",
+        "@types/express-session": "^1.17.4",
+        "@types/mongoose-sequence": "^3.0.7",
         "axios": "^0.27.2",
         "celebrate": "^15.0.1",
         "connect-redis": "^6.1.1",

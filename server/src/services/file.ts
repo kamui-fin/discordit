@@ -1,4 +1,4 @@
-import { LinkModel } from "../models/link"
+import { FileModel } from "../models/file"
 
 const ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 const BASE = ALPHABET.length
@@ -26,13 +26,13 @@ export const decodeBase62 = (str: string): number => {
 }
 
 // returns shortened version
-export const insertUrl = async (url: string): Promise<string> => {
-    const link = new LinkModel({ originalLink: url })
-    await link.save()
-    return encodeBase62(link.seq)
+export const insertFile = async (userId: string, fileId: string, mimeType: string): Promise<string> => {
+    const file = new FileModel({ userId, fileId, mimeType })
+    await file.save()
+    return encodeBase62(file.seq)
 }
 
 export const convertToOriginal = async (shortened: string) => {
-    const link = await LinkModel.findOne({ seq: decodeBase62(shortened) })
-    return link?.originalLink
+    const file = await FileModel.findOne({ seq: decodeBase62(shortened) })
+    return file
 }

@@ -1,6 +1,5 @@
 import dotenv from "dotenv"
 import { SessionOptions } from "express-session"
-import { google } from "googleapis"
 
 dotenv.config()
 
