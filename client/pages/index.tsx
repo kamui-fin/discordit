@@ -1,14 +1,16 @@
 import type { GetServerSidePropsContext, NextPage } from "next"
 import DragDrop from "../components/DragDrop"
-import LogoutButton from "../components/LogoutButton"
+import Navbar from "../components/Navbar"
 import styles from "../styles/index.module.scss"
 
 const Home: NextPage = () => {
     return (
-        <div className={styles.container}>
-            <DragDrop />
-            <LogoutButton />
-        </div>
+        <>
+            <Navbar loggedIn={false} />
+            <div className={styles.container}>
+                <DragDrop />
+            </div>
+        </>
     )
 }
 

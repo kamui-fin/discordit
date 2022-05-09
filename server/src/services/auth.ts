@@ -4,7 +4,6 @@ import { google } from "googleapis"
 import { UserModel } from "../models/user"
 import { Credentials } from "google-auth-library"
 import { SessionData } from "express-session"
-import { logger } from "../utils"
 import { FRONTEND_URL } from "../config"
 
 export const getGoogleOauthToken = async (code: string) => {
@@ -33,7 +32,7 @@ export const getClient = (tokens?: Credentials) => {
     const oAuth2Client = new google.auth.OAuth2(
         process.env.GOOGLE_CLIENT_ID,
         process.env.GOOGLE_CLIENT_SECRET,
-        FRONTEND_URL
+        `${FRONTEND_URL}/login`
     )
     if (tokens) {
         oAuth2Client.setCredentials(tokens)

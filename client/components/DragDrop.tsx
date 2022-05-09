@@ -23,7 +23,10 @@ const DragDrop = () => {
             // formData.append("file", file)
             // const res = await http.post("/media/upload", formData)
             // const fileId = res.data.data.id
-            const shortened = await http.post("/file/shorten", { fileId: "1xFcmBB1FpdlN_5akeJKnPZEoKcUtUWzS", mimeType: "image/jpeg" })
+            const shortened = await http.post("/file/shorten", {
+                fileId: "1xFcmBB1FpdlN_5akeJKnPZEoKcUtUWzS",
+                mimeType: "image/jpeg",
+            })
             console.log(shortened)
         }
     }
@@ -39,8 +42,10 @@ const DragDrop = () => {
                     </p>
                 )}
             </div>
-            {file && <p>{file.name}</p>}
-            <Button onDone={upload}>Submit</Button>
+            {file && <p className={styles.filename}>{file.name}</p>}
+            <Button className={styles.btn} onDone={upload}>
+                Submit
+            </Button>
         </main>
     )
 }

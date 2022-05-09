@@ -1,0 +1,29 @@
+.navbar {
+    background-color: #eceff4;
+}
+
+.items {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    width: 900px;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    gap: 1.4rem;
+}
+
+.logo:hover {
+    cursor: pointer;
+}
+
+.link {
+    text-decoration: none;
+    color: initial;
+    font-weight: 500;
+}

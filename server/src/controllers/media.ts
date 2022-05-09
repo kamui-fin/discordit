@@ -31,6 +31,7 @@ export const readMedia = catchAsync(async (req, res) => {
         throw new ApiError("could not find file", NOT_FOUND)
     } else {
         res.set("Content-Type", file.mimeType)
+        console.log(file)
 
         withTokensById(file.userId, async (tokens: Credentials) => {
             const readable = await driveDownloadFile(file.fileId, tokens)

@@ -1,5 +1,5 @@
 import express from "express"
-import { googleOauth, generateGoogleAuthUrl } from "../controllers/auth"
+import { googleOauth, logout } from "../controllers/auth"
 import { validate } from "../utils"
 import { onlyAuth } from "../middlewares/auth"
 import { Joi, Segments } from "celebrate"
@@ -17,6 +17,6 @@ router.post(
     onlyAuth
 )
 
-router.get("/google/url", generateGoogleAuthUrl)
+router.post("/logout", logout, onlyAuth)
 
 export default router
