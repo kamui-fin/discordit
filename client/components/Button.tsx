@@ -1,19 +1,19 @@
 import cx from "classnames"
 import styles from "../styles/Button.module.scss"
 
+interface Props {
+    children: React.ReactChild
+    type?: string
+    className?: string
+    onDone?: () => void
+}
+
 const Button = ({
     type = "primary",
     children,
-    className,
-    icon,
+    className = "",
     onDone,
-}: {
-    type: string
-    children: React.ReactElement
-    className: string
-    icon?: React.ReactElement
-    onDone?: () => void
-}) => {
+}: Props) => {
     // TODO: implement icon
     const typeMap: { [key: string]: string } = {
         primary: styles.primary,

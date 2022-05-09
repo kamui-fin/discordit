@@ -5,45 +5,42 @@ import { http } from "../lib/axios"
 import styles from "../styles/DragDrop.module.scss"
 
 const DragDrop = () => {
-    const [files, setFiles] = useState([])
+    const [file, setFile] = useState(null)
     const onDrop = useCallback((acceptedFiles) => {
-        setFiles(acceptedFiles)
+        setFile(acceptedFiles[0])
     }, [])
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: {
             "image/*": [],
             "video/*": [],
         },
+        maxFiles: 1,
         onDrop,
     })
-    const uploadAll = async () => {
-        const formData = new FormData()
-        formData.append("file", files[0])
-        const res = await http.post("/media/upload", formData)
-        const { fileId } = res
-        const shortened = await http.post("/url/shorten", { fileId: 0 })
-        console.log(shortened)
+    const upload = async () => {
+        if (file) {
+            // const formData = new FormData()
+            // formData.append("file", file)
+            // const res = await http.post("/media/upload", formData)
+            // const fileId = res.data.data.id
+            const shortened = await http.post("/file/shorten", { fileId: "1xFcmBB1FpdlN_5akeJKnPZEoKcUtUWzS", mimeType: "image/jpeg" })
+            console.log(shortened)
+        }
     }
     return (
         <main className={styles.container}>
             <div {...getRootProps()} className={styles.dragdrop}>
                 <input {...getInputProps()} />
                 {isDragActive ? (
-                    <p>Drop the files here ...</p>
+                    <p>Drop the file here ...</p>
                 ) : (
                     <p>
-                        Drag 'n' drop some files here, or click to select files
+                        Drag 'n' drop some file here, or click to select a file
                     </p>
                 )}
             </div>
-            <div>
-                <ul className={styles.listing}>
-                    {files.map((file) => (
-                        <li>{file.name}</li>
-                    ))}
-                </ul>
-            </div>
-            <Button onDone={uploadAll}>Submit</Button>
+            {file && <p>{file.name}</p>}
+            <Button onDone={upload}>Submit</Button>
         </main>
     )
 }
