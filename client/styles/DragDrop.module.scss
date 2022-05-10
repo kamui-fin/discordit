@@ -1,26 +1,107 @@
 .container {
-    max-width: 500px;
+    max-width: 650px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     margin: auto;
-    margin-top: 4rem;
+    margin-top: 6rem;
+}
+
+.dragContainer {
+    background-color: #dce2f0;
+    padding: 2rem;
+    border-radius: 0.7rem;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    padding-top: 3rem;
+    padding-bottom: 2.5rem;
+}
+
+.heading {
+    margin: 0;
+    padding: 0;
+}
+
+.info {
+    text-align: center;
+}
+
+.desc {
+    color: #5d6478;
+    margin: 0.7rem;
 }
 
 .dragdrop {
-    border: 2px dashed #eeeeee;
+    border: 2px dashed #9ba5c0;
+    background-color: #eff3fc;
     text-align: center;
     padding: 2rem 3rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
 }
 
 .dragdrop:hover {
     cursor: pointer;
+    // background-color: #e1e7f1;
 }
 
 .filename {
     margin-top: 1rem;
+    margin-bottom: 0;
 }
 
 .btn {
     margin-top: 1rem;
+}
+
+.uploadControl {
+    display: flex;
+    justify-content: space-between;
+}
+
+.fileInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: .7rem .6rem;
+
+    span {
+        color: #eff3fc;
+        font-weight: 500;
+    }
+
+    .filesize {
+        font-weight: bold;
+        font-size: smaller;
+    }
+}
+
+.icon {
+    font-size: 4rem;
+}
+
+.prompt {
+    margin-top: 0;
+}
+
+.fileIcon {
+    font-size: 1.8rem;
+    fill: white;
+}
+
+.fileData {
+    padding-left: .7rem;
+    display: flex;
+    align-items: center;
+}
+
+.statusText {
+    font-weight: 500;
+}
+
+.cancel:hover {
+    cursor: pointer;
+}
+
+.active {
+    background-color: #e1e7f1;
 }

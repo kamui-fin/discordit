@@ -10,12 +10,12 @@ const Navbar = ({ loggedIn }) => (
                     <h2 className={styles.logo}>discord.it</h2>
                 </a>
             </Link>
-            {!loggedIn && (
+            {loggedIn && (
                 <ul className={styles.menu}>
                     <li>
-                        <Link href="/settings">
+                        {/* <Link href="/settings">
                             <a className={styles.link}>Settings</a>
-                        </Link>
+                        </Link> */}
                     </li>
                     <LogoutButton />
                 </ul>

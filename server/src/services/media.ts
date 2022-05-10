@@ -69,7 +69,7 @@ export const uploadFile = async (userId: number, tokens: Credentials, file: Uplo
     const folder = await getUserFolderId(userId)
     if (folder) {
         const res = await uploadToDrive(tokens, file, folder)
-        return { mimetype: file.mimetype, ...res }
+        return res
     }
 }
 

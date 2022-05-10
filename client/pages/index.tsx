@@ -6,7 +6,7 @@ import styles from "../styles/index.module.scss"
 const Home: NextPage = () => {
     return (
         <>
-            <Navbar loggedIn={false} />
+            <Navbar loggedIn={true} />
             <div className={styles.container}>
                 <DragDrop />
             </div>
