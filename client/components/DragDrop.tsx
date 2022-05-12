@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react"
+import { useCallback, useMemo, useState } from "react"
 import { useDropzone } from "react-dropzone"
 import { http } from "../lib/axios"
 import cx from "classnames"
@@ -13,8 +13,8 @@ enum Status {
     NO_FILE = "No file uploaded",
 }
 
-const getHumanReadableSize = (bytes) => {
-    if (bytes == 0) {
+const getHumanReadableSize = (bytes: number) => {
+    if (bytes === 0) {
         return "0.00 B"
     }
     const e = Math.floor(Math.log(bytes) / Math.log(1024))
@@ -23,7 +23,21 @@ const getHumanReadableSize = (bytes) => {
     )
 }
 
-const Uploading = ({ fileName, fileSize, progress, cancelReq, status }) => {
+interface UploadProps {
+    fileName: string
+    fileSize: number
+    progress: number
+    cancelReq: () => void
+    status: Status
+}
+
+const Uploading = ({
+    fileName,
+    fileSize,
+    progress,
+    cancelReq,
+    status,
+}: UploadProps) => {
     return (
         <>
             <div className={styles.uploadControl}>
@@ -39,10 +53,21 @@ const Uploading = ({ fileName, fileSize, progress, cancelReq, status }) => {
             </div>
             <ProgressBar completed={progress}>
                 <div className={styles.fileData}>
-                    <AiOutlineFile className={styles.fileIcon} />
+                    {/* <AiOutlineFile className={styles.fileIcon} /> */}
                     <div className={styles.fileInfo}>
                         <span>{fileName}</span>
                         <span className={styles.filesize}>
+                            {getHumanReadableSize(fileSize)}
+                        </span>
+                    </div>
+                </div>
+                <div className={cx(styles.fileData, styles.overlay)}
+                    style={{ width: `${progress}%`}}
+                >
+                    {/* <AiOutlineFile className={styles.fileIcon} /> */}
+                    <div className={styles.fileInfo}>
+                        <span className={styles.colorWhite}>{fileName}</span>
+                        <span className={cx(styles.filesize, styles.colorWhite)}>
                             {getHumanReadableSize(fileSize)}
                         </span>
                     </div>
@@ -53,14 +78,15 @@ const Uploading = ({ fileName, fileSize, progress, cancelReq, status }) => {
 }
 
 const DragDrop = () => {
-    const [file, setFile] = useState(null)
+    const [file, setFile] = useState<File>()
     const [status, setStatus] = useState(Status.NO_FILE)
-    const [uploadProgress, setUploadProgress] = useState(20)
-    const controller = new AbortController()
+    const [uploadProgress, setUploadProgress] = useState(0)
+    const controller = useMemo(() => new AbortController(), [])
 
-    const onDrop = useCallback(async (acceptedFiles) => {
+    const onDrop = useCallback(async (acceptedFiles: File[]) => {
         const [uploadedFile] = acceptedFiles
         setFile(uploadedFile)
+        setUploadProgress(0)
         setStatus(Status.UPLOADING)
         await upload(uploadedFile)
     }, [])
@@ -73,31 +99,38 @@ const DragDrop = () => {
         onDrop,
     })
 
-    const onUploadProgress = (event) => {
+    const onUploadProgress = (event: ProgressEvent) => {
         setUploadProgress(Math.round((100 * event.loaded) / event.total))
     }
 
-    const upload = async (file) => {
+    const upload = async (file: File) => {
         if (file) {
             const formData = new FormData()
             formData.append("file", file)
-            const res = await http.post("/media/upload", formData, {
-                signal: controller.signal,
-                onUploadProgress,
-            })
-            const { id, mimetype } = res.data.data.id
-            const shortened = await http.post("/file/shorten", {
-                fileId: id,
-                mimeType: mimetype,
-            })
-            console.log(shortened)
-            setStatus(Status.UPLOADED)
+            try {
+                const res = await http.post("/media/upload", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                    signal: controller.signal,
+                    onUploadProgress,
+                })
+                const { id, mimeType } = res.data.data
+                const shortened = await http.post("/file/shorten", {
+                    fileId: id,
+                    mimeType,
+                })
+                setStatus(Status.UPLOADED)
+                console.log(shortened)
+            } catch(e) {
+                setStatus(Status.CANCELED)
+                console.log("aborted", e)
+            }
         }
     }
 
     const cancel = () => {
         controller.abort()
-        setStatus(Status.CANCELED)
     }
 
     return (
@@ -125,7 +158,7 @@ const DragDrop = () => {
                         </p>
                     )}
                 </div>
-                {status !== Status.NO_FILE && (
+                {status !== Status.NO_FILE && file && (
                     <Uploading
                         fileName={file.name}
                         fileSize={file.size}

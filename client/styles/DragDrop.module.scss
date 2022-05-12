@@ -59,13 +59,18 @@
 }
 
 .fileInfo {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.7rem 0.6rem;
+    top: 0;
+    left: 0.5rem;
+    right: 0;
     display: flex;
     flex-direction: column;
     gap: 0.3rem;
-    padding: .7rem .6rem;
 
     span {
-        color: #eff3fc;
         font-weight: 500;
     }
 
@@ -73,6 +78,19 @@
         font-weight: bold;
         font-size: smaller;
     }
+}
+
+.overlay {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    z-index: 9999;
+    white-space: nowrap;
+}
+
+.colorWhite {
+    color: #eff3fc;
+    font-weight: 200;
 }
 
 .icon {
@@ -83,15 +101,16 @@
     margin-top: 0;
 }
 
-.fileIcon {
-    font-size: 1.8rem;
-    fill: white;
-}
+// .fileIcon {
+//     font-size: 2.8rem;
+//     fill: white;
+// }
 
 .fileData {
-    padding-left: .7rem;
+    padding-left: 0.7rem;
     display: flex;
     align-items: center;
+    width: 100%;
 }
 
 .statusText {

@@ -1,11 +1,17 @@
 .progressContainer {
     background-color: #eff3fc;
     border-radius: 0.7rem;
+    height: 4rem;
+    overflow: hidden;
+    position: relative;
 }
 
 .completed {
+    position: absolute;
+    top: -1;
+    left: 0;
+    height: 100%;
     border-top-left-radius: 0.7rem;
     border-bottom-left-radius: 0.7rem;
     background-color: #434c5e;
-    color: #fbfcfd;
 }

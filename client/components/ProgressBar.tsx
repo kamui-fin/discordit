@@ -6,9 +6,8 @@ const ProgressBar = ({ completed, children }) => {
             <div
                 className={styles.completed}
                 style={{ width: `${completed}%` }}
-            >
-                {children}
-            </div>
+            ></div>
+            {children}
         </div>
     )
 }

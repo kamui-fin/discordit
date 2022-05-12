@@ -18,7 +18,7 @@ export const createFolder = async (auth: OAuth2Client, name: string, parent?: st
         spaces: "drive",
     })
     const fileList = listing.data.files
-    if (fileList) {
+    if (fileList?.length) {
         return fileList[0].id
     }
 
@@ -88,6 +88,6 @@ export const driveDownloadFile = async (fileId: string, tokens: Credentials) => 
             logger.info("finished streaming data")
         })
         .on("error", function (err) {
-            throw new ApiError(`error streaming data ${err}`);
+            throw new ApiError(`error streaming data ${err}`)
         })
 }
