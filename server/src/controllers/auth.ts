@@ -8,15 +8,16 @@ export const googleOauth = catchAsync(async (req, res) => {
     // only authorization, not authentication
     const { code } = req.body
     const tokens = await getGoogleOauthToken(code)
+    // TODO: handle invalid refresh token due to removal of perms
 
     // setup their folder
     const folderId = await createFolder(getClient(tokens), "discordit")
 
     // save user to db
     const userInfo = await getGoogleUser(tokens)
-    await registerIfNotExists({ folderId, ...userInfo })
+    await registerIfNotExists({ folderId, refreshToken: tokens.refresh_token, ...userInfo })
 
-    req.session.tokens = tokens
+    req.session.tokens = { ...tokens, ...(!tokens.refresh_token && { refresh_token: userInfo.refreshToken }) }
     req.session.userId = Number.parseInt(userInfo.id)
     req.session.loggedIn = true
     // for some reason a manual save is required to persist google tokens

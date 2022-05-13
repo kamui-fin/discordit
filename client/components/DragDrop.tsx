@@ -3,83 +3,14 @@ import { useDropzone } from "react-dropzone"
 import { http } from "../lib/axios"
 import cx from "classnames"
 import styles from "../styles/DragDrop.module.scss"
-import ProgressBar from "./ProgressBar"
 import { AiOutlineCloudUpload, AiOutlineFile } from "react-icons/ai"
-
-enum Status {
-    UPLOADING = "Uploading...",
-    UPLOADED = "Uploaded",
-    CANCELED = "Canceled",
-    NO_FILE = "No file uploaded",
-}
-
-const getHumanReadableSize = (bytes: number) => {
-    if (bytes === 0) {
-        return "0.00 B"
-    }
-    const e = Math.floor(Math.log(bytes) / Math.log(1024))
-    return (
-        (bytes / Math.pow(1024, e)).toFixed(2) + " " + " KMGTP".charAt(e) + "B"
-    )
-}
-
-interface UploadProps {
-    fileName: string
-    fileSize: number
-    progress: number
-    cancelReq: () => void
-    status: Status
-}
-
-const Uploading = ({
-    fileName,
-    fileSize,
-    progress,
-    cancelReq,
-    status,
-}: UploadProps) => {
-    return (
-        <>
-            <div className={styles.uploadControl}>
-                <p className={styles.statusText}>{status}</p>
-                {status === Status.UPLOADING && (
-                    <p
-                        className={cx(styles.statusText, styles.cancel)}
-                        onClick={cancelReq}
-                    >
-                        Cancel
-                    </p>
-                )}
-            </div>
-            <ProgressBar completed={progress}>
-                <div className={styles.fileData}>
-                    {/* <AiOutlineFile className={styles.fileIcon} /> */}
-                    <div className={styles.fileInfo}>
-                        <span>{fileName}</span>
-                        <span className={styles.filesize}>
-                            {getHumanReadableSize(fileSize)}
-                        </span>
-                    </div>
-                </div>
-                <div className={cx(styles.fileData, styles.overlay)}
-                    style={{ width: `${progress}%`}}
-                >
-                    {/* <AiOutlineFile className={styles.fileIcon} /> */}
-                    <div className={styles.fileInfo}>
-                        <span className={styles.colorWhite}>{fileName}</span>
-                        <span className={cx(styles.filesize, styles.colorWhite)}>
-                            {getHumanReadableSize(fileSize)}
-                        </span>
-                    </div>
-                </div>
-            </ProgressBar>
-        </>
-    )
-}
+import CopyUrl from "./CopyUrl"
+import Uploading, { Status } from "./Uploading"
 
 const DragDrop = () => {
     const [file, setFile] = useState<File>()
     const [status, setStatus] = useState(Status.NO_FILE)
+    const [shortenedUrl, setShortenedUrl] = useState("")
     const [uploadProgress, setUploadProgress] = useState(0)
     const controller = useMemo(() => new AbortController(), [])
 
@@ -121,8 +52,10 @@ const DragDrop = () => {
                     mimeType,
                 })
                 setStatus(Status.UPLOADED)
-                console.log(shortened)
-            } catch(e) {
+                setShortenedUrl(
+                    `http://localhost:3000/${shortened.data.shortened}`
+                )
+            } catch (e) {
                 setStatus(Status.CANCELED)
                 console.log("aborted", e)
             }
@@ -138,9 +71,7 @@ const DragDrop = () => {
             <div className={styles.dragContainer}>
                 <div className={styles.info}>
                     <h2 className={styles.heading}>Upload your media</h2>
-                    <p className={styles.desc}>
-                        Images, videos, and audio files are allowed
-                    </p>
+                    <p className={styles.desc}>Any type of file is accepted</p>
                 </div>
                 <div
                     {...getRootProps()}
@@ -167,6 +98,9 @@ const DragDrop = () => {
                         status={status}
                     />
                 )}
+            </div>
+            <div className={styles.afterUpload}>
+                {shortenedUrl && <CopyUrl link={shortenedUrl} />}
             </div>
         </main>
     )

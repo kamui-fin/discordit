@@ -21,14 +21,14 @@ export const getGoogleUser = async (tokens: Credentials) => {
     ).data
 }
 
-export const registerIfNotExists = async ({ id, email, name, folderId }) => {
+export const registerIfNotExists = async ({ id, email, name, folderId, refreshToken }) => {
     if (!(await UserModel.findOne({ userId: id }))) {
-        const user = new UserModel({ userId: id, username: name, email, folderId })
+        const user = new UserModel({ userId: id, username: name, email, folderId, refreshToken })
         await user.save()
     }
 }
 
-export const getClient = (tokens?: Credentials) => {
+export const getClient = (tokens?: Credentials, userId?: number) => {
     const oAuth2Client = new google.auth.OAuth2(
         process.env.GOOGLE_CLIENT_ID,
         process.env.GOOGLE_CLIENT_SECRET,
@@ -36,6 +36,21 @@ export const getClient = (tokens?: Credentials) => {
     )
     if (tokens) {
         oAuth2Client.setCredentials(tokens)
+        oAuth2Client.on("tokens", (tokens) => {
+            store.all?.((error, sessions) => {
+                if (error) throw error
+                if (sessions) {
+                    const { id } = (sessions as any[]).find((session: SessionData) => {
+                        return session.userId === userId
+                    })
+                    if (id) {
+                        store.set(id, { tokens: { access_token: tokens.access_token } }, (error) => {
+                            throw error
+                        })
+                    }
+                }
+            })
+        })
     }
     return oAuth2Client
 }

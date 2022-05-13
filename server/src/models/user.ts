@@ -5,6 +5,7 @@ export interface IUser {
     username: string
     email: string
     folderId: string
+    refreshToken: string
 }
 
 const schema = new Schema<IUser>(
@@ -22,6 +23,7 @@ const schema = new Schema<IUser>(
             type: String,
             required: true,
         },
+        refreshToken: String,
     },
     { timestamps: true }
 )

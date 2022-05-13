@@ -41,56 +41,10 @@
 
 .dragdrop:hover {
     cursor: pointer;
-    // background-color: #e1e7f1;
-}
-
-.filename {
-    margin-top: 1rem;
-    margin-bottom: 0;
 }
 
 .btn {
     margin-top: 1rem;
-}
-
-.uploadControl {
-    display: flex;
-    justify-content: space-between;
-}
-
-.fileInfo {
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    padding: 0.7rem 0.6rem;
-    top: 0;
-    left: 0.5rem;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-
-    span {
-        font-weight: 500;
-    }
-
-    .filesize {
-        font-weight: bold;
-        font-size: smaller;
-    }
-}
-
-.overlay {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-    z-index: 9999;
-    white-space: nowrap;
-}
-
-.colorWhite {
-    color: #eff3fc;
-    font-weight: 200;
 }
 
 .icon {
@@ -106,21 +60,11 @@
 //     fill: white;
 // }
 
-.fileData {
-    padding-left: 0.7rem;
-    display: flex;
-    align-items: center;
-    width: 100%;
-}
-
-.statusText {
-    font-weight: 500;
-}
-
-.cancel:hover {
-    cursor: pointer;
-}
-
 .active {
     background-color: #e1e7f1;
+}
+
+.afterUpload {
+    display: flex;
+    gap: 1rem;
 }

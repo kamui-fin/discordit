@@ -10,16 +10,28 @@ const Navbar = ({ loggedIn }) => (
                     <h2 className={styles.logo}>discord.it</h2>
                 </a>
             </Link>
-            {loggedIn && (
-                <ul className={styles.menu}>
-                    <li>
-                        {/* <Link href="/settings">
-                            <a className={styles.link}>Settings</a>
-                        </Link> */}
-                    </li>
-                    <LogoutButton />
-                </ul>
-            )}
+            <ul className={styles.menu}>
+                <li>
+                    <Link href="/about">
+                        <a className={styles.link}>About</a>
+                    </Link>
+                </li>
+                {loggedIn && (
+                    <>
+                        <li>
+                            <Link href="/uploads">
+                                <a className={styles.link}>Uploads</a>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link href="/settings">
+                                <a className={styles.link}>Settings</a>
+                            </Link>
+                        </li>
+                        <LogoutButton />
+                    </>
+                )}
+            </ul>
         </div>
     </nav>
 )
