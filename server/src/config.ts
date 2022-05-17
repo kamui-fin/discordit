@@ -8,7 +8,7 @@ export const {
     APP_PORT = 3000,
     APP_SECRET = "bruh",
     SESSION_COOKIE = "sid",
-    MONGO_URI = "mongodb://127.0.0.1:27017/discordit",
+    MONGO_URI = "mongodb://127.0.0.1:27017/shareit",
     REDIS_URI = "redis://localhost:6379",
 } = process.env
 

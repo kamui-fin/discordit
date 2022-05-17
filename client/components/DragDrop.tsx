@@ -4,13 +4,15 @@ import { http } from "../lib/axios"
 import cx from "classnames"
 import styles from "../styles/DragDrop.module.scss"
 import { AiOutlineCloudUpload, AiOutlineFile } from "react-icons/ai"
-import CopyUrl from "./CopyUrl"
 import Uploading, { Status } from "./Uploading"
 
-const DragDrop = () => {
+interface Props {
+    onDone: (url: string) => void
+}
+
+const DragDrop = ({ onDone }: Props) => {
     const [file, setFile] = useState<File>()
     const [status, setStatus] = useState(Status.NO_FILE)
-    const [shortenedUrl, setShortenedUrl] = useState("")
     const [uploadProgress, setUploadProgress] = useState(0)
     const controller = useMemo(() => new AbortController(), [])
 
@@ -21,6 +23,7 @@ const DragDrop = () => {
         setStatus(Status.UPLOADING)
         await upload(uploadedFile)
     }, [])
+
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: {
             "image/*": [],
@@ -52,9 +55,7 @@ const DragDrop = () => {
                     mimeType,
                 })
                 setStatus(Status.UPLOADED)
-                setShortenedUrl(
-                    `http://localhost:3000/${shortened.data.shortened}`
-                )
+                onDone(`http://localhost:3000/${shortened.data.shortened}`)
             } catch (e) {
                 setStatus(Status.CANCELED)
                 console.log("aborted", e)
@@ -67,7 +68,7 @@ const DragDrop = () => {
     }
 
     return (
-        <main className={styles.container}>
+        <div className={styles.container}>
             <div className={styles.dragContainer}>
                 <div className={styles.info}>
                     <h2 className={styles.heading}>Upload your media</h2>
@@ -99,10 +100,7 @@ const DragDrop = () => {
                     />
                 )}
             </div>
-            <div className={styles.afterUpload}>
-                {shortenedUrl && <CopyUrl link={shortenedUrl} />}
-            </div>
-        </main>
+        </div>
     )
 }
 

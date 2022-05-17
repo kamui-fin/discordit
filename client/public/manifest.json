@@ -1,0 +1,10 @@
+{
+    "theme_color" : "#434c5e",
+    "background_color" : "#dce2f0",
+    "display" : "browser",
+    "scope" : "/",
+    "start_url" : "/",
+    "name" : "shareit",
+    "short_name" : "shareit",
+    "description" : "Flawlessly share large media files across different platforms"
+}

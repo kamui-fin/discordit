@@ -11,7 +11,7 @@ export const googleOauth = catchAsync(async (req, res) => {
     // TODO: handle invalid refresh token due to removal of perms
 
     // setup their folder
-    const folderId = await createFolder(getClient(tokens), "discordit")
+    const folderId = await createFolder(getClient(tokens), "shareit")
 
     // save user to db
     const userInfo = await getGoogleUser(tokens)
