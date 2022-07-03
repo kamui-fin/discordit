@@ -1,3 +1,4 @@
+import { DateTime } from "luxon"
 import { FileModel } from "../models/file"
 
 const ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -25,8 +26,13 @@ export const decodeBase62 = (str: string): number => {
 }
 
 // returns shortened version
-export const insertFile = async (userId: number, fileId: string, mimeType: string): Promise<string> => {
-    const file = new FileModel({ userId, fileId, mimeType })
+export const insertFile = async (
+    userId: number,
+    fileId: string,
+    mimeType: string,
+    expireDate?: DateTime
+): Promise<string> => {
+    const file = new FileModel({ userId, fileId, mimeType, expiresAt: expireDate?.toJSDate() })
     await file.save()
     return encodeBase62(file.seq)
 }

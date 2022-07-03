@@ -1,7 +1,7 @@
 import axios from "axios"
 import { store } from "../db"
 import { google } from "googleapis"
-import { UserModel } from "../models/user"
+import { ISettings, UserModel } from "../models/user"
 import { Credentials } from "google-auth-library"
 import { SessionData } from "express-session"
 import { FRONTEND_URL } from "../config"
@@ -67,4 +67,12 @@ export const withTokensById = async (userId: number, cb: (tokens: Credentials) =
             }
         }
     })
+}
+
+export const saveUserSettings = async (settings: ISettings, userId: number) => {
+    const res = await UserModel.findOne({ userId })
+    if (res) {
+        res.update({$set: {settings}})
+        res.save()
+    }
 }

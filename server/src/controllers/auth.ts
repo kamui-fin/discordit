@@ -1,6 +1,6 @@
 import { catchAsync } from "../utils"
-import { NO_CONTENT, OK } from "http-status"
-import { getClient, getGoogleOauthToken, getGoogleUser, registerIfNotExists } from "../services/auth"
+import { CREATED, NO_CONTENT, OK } from "http-status"
+import { getClient, getGoogleOauthToken, getGoogleUser, registerIfNotExists, saveUserSettings } from "../services/auth"
 import { createFolder } from "../services/media"
 
 export const googleOauth = catchAsync(async (req, res) => {
@@ -32,4 +32,9 @@ export const logout = catchAsync(async (req, res) => {
         }
         res.status(NO_CONTENT).clearCookie("sid").send()
     })
+})
+
+export const saveSettings = catchAsync(async (req, res) => {
+    await saveUserSettings(req.body, req.session.userId)
+    res.status(OK)
 })

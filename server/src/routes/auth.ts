@@ -1,5 +1,5 @@
 import express from "express"
-import { googleOauth, logout } from "../controllers/auth"
+import { googleOauth, logout, saveSettings } from "../controllers/auth"
 import { validate } from "../utils"
 import { onlyAuth } from "../middlewares/auth"
 import { Joi, Segments } from "celebrate"
@@ -18,5 +18,6 @@ router.post(
 )
 
 router.post("/logout", logout, onlyAuth)
+router.post("/settings/save", saveSettings, onlyAuth)
 
 export default router

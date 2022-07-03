@@ -1,11 +1,20 @@
 import { Schema, model } from "mongoose"
 
+export interface ISettings {
+    maximumSpace: number; // in mb
+    enableCompression: boolean;
+    daysExpiry: number;
+    hoursExpiry: number;
+    minutesExpiry: number;
+}
+
 export interface IUser {
     userId: number
     username: string
     email: string
     folderId: string
     refreshToken: string
+    settings: ISettings
 }
 
 const schema = new Schema<IUser>(
@@ -24,6 +33,13 @@ const schema = new Schema<IUser>(
             required: true,
         },
         refreshToken: String,
+        settings: {
+            maximumSpace: Number, // in mb
+            enableCompression: Boolean,
+            daysExpiry: Number,
+            hoursExpiry: Number,
+            minutesExpiry: Number,
+        },
     },
     { timestamps: true }
 )
