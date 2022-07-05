@@ -5,12 +5,14 @@ import cx from "classnames"
 import styles from "../styles/DragDrop.module.scss"
 import { AiOutlineCloudUpload, AiOutlineFile } from "react-icons/ai"
 import Uploading, { Status } from "./Uploading"
+import { ISettings } from "../pages/settings"
 
 interface Props {
     onDone: (url: string) => void
+    settings: ISettings
 }
 
-const DragDrop = ({ onDone }: Props) => {
+const DragDrop = ({ onDone, settings }: Props) => {
     const [file, setFile] = useState<File>()
     const [status, setStatus] = useState(Status.NO_FILE)
     const [uploadProgress, setUploadProgress] = useState(0)

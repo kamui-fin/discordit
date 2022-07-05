@@ -7,10 +7,17 @@ import Navbar from "../components/Navbar"
 import styles from "../styles/index.module.scss"
 import { GiShare } from "react-icons/gi"
 import { useMobileDevice } from "../lib/hooks"
+import { useQuery, useQueryClient } from "react-query"
+import { http } from "../lib/axios"
 
 const Home: NextPage = () => {
     const [shortenedUrl, setShortenedUrl] = useState("")
     const [isMobile] = useMobileDevice()
+    const queryClient = useQueryClient()
+    const { isLoading, isError, data, error } = useQuery('settings', async () => {
+        const { data } = await http.get("/auth/me")
+        return data.settings
+    })
 
     const share = () => {
         if (navigator.share) {
@@ -34,7 +41,7 @@ const Home: NextPage = () => {
         <>
             <Navbar loggedIn={true} />
             <div className={styles.container}>
-                <DragDrop onDone={(url: string) => setShortenedUrl(url)} />
+                <DragDrop settings={data} onDone={(url: string) => setShortenedUrl(url)} />
                 <div className={styles.afterUpload}>
                     {shortenedUrl && (
                         <>

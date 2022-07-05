@@ -2,6 +2,7 @@ import { catchAsync } from "../utils"
 import { CREATED, NO_CONTENT, OK } from "http-status"
 import { getClient, getGoogleOauthToken, getGoogleUser, registerIfNotExists, saveUserSettings } from "../services/auth"
 import { createFolder } from "../services/media"
+import { UserModel } from "../models/user"
 
 export const googleOauth = catchAsync(async (req, res) => {
     // assumes already logged in
@@ -32,6 +33,11 @@ export const logout = catchAsync(async (req, res) => {
         }
         res.status(NO_CONTENT).clearCookie("sid").send()
     })
+})
+
+export const getUserData = catchAsync(async (req, res) => {
+    const user = await UserModel.findOne({ userId: req.session.userId })
+    res.status(OK).send(user)
 })
 
 export const saveSettings = catchAsync(async (req, res) => {

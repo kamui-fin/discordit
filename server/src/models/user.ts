@@ -1,8 +1,7 @@
 import { Schema, model } from "mongoose"
 
 export interface ISettings {
-    maximumSpace: number; // in mb
-    enableCompression: boolean;
+    // maximumSpace: number; // in mb
     daysExpiry: number;
     hoursExpiry: number;
     minutesExpiry: number;
@@ -34,11 +33,10 @@ const schema = new Schema<IUser>(
         },
         refreshToken: String,
         settings: {
-            maximumSpace: Number, // in mb
-            enableCompression: Boolean,
-            daysExpiry: Number,
-            hoursExpiry: Number,
-            minutesExpiry: Number,
+            // maximumSpace: { type: Number, default: 0 }, // in mb
+            daysExpiry: { type: Number, default: 0 },
+            hoursExpiry: { type: Number, default: 0 },
+            minutesExpiry: { type: Number, default: 0 }
         },
     },
     { timestamps: true }

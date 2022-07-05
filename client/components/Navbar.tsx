@@ -7,7 +7,7 @@ const Navbar = ({ loggedIn }) => (
         <div className={styles.items}>
             <Link href="/">
                 <a className={styles.link}>
-                    <h2 className={styles.logo}>discord.it</h2>
+                    <h2 className={styles.logo}>UniShare</h2>
                 </a>
             </Link>
             <ul className={styles.menu}>
